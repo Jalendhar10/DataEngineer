@@ -1,0 +1,234 @@
+
+What is Spark SQL?
+=================
+--> is a abstraction on top of Spark Core
+--> In Spark Core, we will write RDD Programming using Java, Scala, Python.
+   It is lengthy, takes time to implment.
+   
+--> Spark sql is very simple and easy to implment and easy learn.
+    any programmer or non-programmers like database developers, warehouse
+    developers etc..
+--> In Spark SQL we will write simple SQL statements.
+--> Once we submit Spark SQL queries internally those are converted Spark 
+    RDD Programs.	
+	
+In Spark Core Programming,
+		We need to Create "SparkContext"
+		We will Create "RDD's"
+		We will apply "Transformations" and "Actions".
+
+Spark SQL,
+		We need to create either "SQLContext or HiveContext".
+		We will create "DataFrames" or "Tables".
+		We will apply "DSL Queries" or "Native SQL Queries".
+		DSL -- Domain Specific Language.
+		
+
+What is DataFrame?	
+==================
+--> is a Storage object PySpark SQL 
+--> it stores data in a rows and columns format.
+--> We can create DataFrame in different ways
+    By Loading csv file, json file, xml file, parquet, orc file, hdfs file,
+	hive table, rdbms table, nosql sql table etc..
+	
+	
+What is Difference between RDD and DataFrame : 
+--------------------------------------------
+
+structured data  --------> csv,tables
+semi structured data ----> json,xml 
+
+Unstructured data -----> audio ,images,videos,logs
+
+
+
+DataFrame supports : structured,semi structured
+RDD : Unstructured Data 
+
+
+
+Resilient Distributed Dataset (RDD)
+------------------------------
+RDD was the primary user-facing API in Spark since its inception. At the core, an RDD is an immutable distributed collection of elements of your data, partitioned across nodes in your cluster that can be operated in parallel with a low-level API that offers transformations and actions.
+
+When to use RDDs?
+
+
+-- you want low-level transformation and actions and control on your dataset.
+
+-- your data is unstructured, such as media streams or streams of text
+
+-- you want to manipulate your data with functional programming constructs than domain specific expressions;
+
+-- you don’t care about imposing a schema, such as columnar format, while processing or accessing data attributes by name or column
+
+a DataFrame is an immutable distributed collection of data. Unlike an RDD, data is organized into named columns, like a table in a relational database.
+
+
+	
+Processing in Spark SQL:-
+=======================
+DSL:
+===
+--> DataFrame supports "DSL" Language.
+--> DSL -- Domain Specific Language.
+--> DSL is a Object Oriented Programming approach.
+--> It is very simple compare to SQL.
+--> It looks like SQL.
+E.g:-
+df1.select("*")
+df1.select("empno")
+df1.select("empno,ename,sal")
+
+Native SQL:-
+==========
+--> First we need to convert DataFrame to table(It may temp table or 
+    permanent table).
+--> Then you can apply SQL sttements.
+E.g:
+sqlc.sql("select * from emp")	
+
+==================================================================================
+
+
+1. How to create dataframe
+
+
+
+i)    using Row object   with sql Context 
+
+		from pyspark.sql import Row
+
+		data = [Row(name='Ravi',age=23),Row(name = 'srinivas',age=21)]
+		sqlContext = SQLContext(sc)
+		df = sqlContext.createDataFrame(data)
+	 
+	
+		using Row object   with spark session 
+		
+		from pyspark.sql import Row
+
+		data = [Row(name='Ravi',age=23),Row(name = 'srinivas',age=22)]
+		df1 = spark.createDataFrame(data)
+      
+
+ 	
+	
+
+ii) Creating DataFrame from RDD
+
+
+	- Create a list of tuples. Each tuple contains name of a person with age.
+	- Create a RDD from the list above.
+	- Convert each tuple to a row.
+	- Create a DataFrame by applying createDataFrame on RDD with the help of sqlContext.
+	
+	
+	sqlContext = SQLContext(sc)
+	l = [('Ankit',25),('Jalfaizy',22),('saurabh',20),('Bala',26)]
+	rdd = sc.parallelize(l)
+	people = rdd.map(lambda x: Row(name=x[0], age=int(x[1])))
+	df = sqlContext.createDataFrame(people)
+	df.show()
+	
+	
+     using spark session 
+	
+     l = [('Ankit',25),('Jalfaizy',22),('saurabh',20),('Bala',26)]
+	 rdd = sc.parallelize(l)
+	 people = rdd.map(lambda x: Row(name=x[0], age=int(x[1])))
+	 df2 = spark.createDataFrame(people)
+	 df2.show()	
+	 
+	 
+    using toDF()
+	
+	l = [('Ankit',25),('Jalfaizy',22),('saurabh',20),('Bala',26)]
+	rdd = sc.parallelize(l)
+	people = rdd.map(lambda x: Row(name=x[0], age=int(x[1])))
+	df3 = people.toDF()
+	df3.show()
+
+
+iii) using StructType
+
+      
+	  data1 = [('Ankit',25),('Jalfaizy',22),('saurabh',20),('Bala',26)]
+	  df1 = spark.createDataFrame(data1)
+	  df1.createOrReplaceTempView("table1")
+	  df2 = spark.sql("select * from table1")
+	  df1.show()
+	  
+	  
+	  output
+	  
+	  +--------+---+
+	  |      _1| _2|
+	  +--------+---+
+	  |   Ankit| 25|
+	  |Jalfaizy| 22|
+	  | saurabh| 20|
+	  |    Bala| 26|
+	  +--------+---+
+	  
+	  
+	  from pyspark.sql.types import *
+
+	  data = [('Ankit',25),('Jalfaizy',22),('saurabh',20),('Bala',26)]
+	  schema = StructType([
+	  					StructField("name", StringType(), True),
+	  					StructField("age", IntegerType(), True)
+	  					]
+	  					)
+	  
+	  df2 = spark.createDataFrame(data,schema)
+	  df2.show()
+	  
+	  
+	  output:
+	  
+     +--------+---+
+	 |    name|age|
+	 +--------+---+
+	 |   Ankit| 25|
+	 |Jalfaizy| 22|
+	 | saurabh| 20|
+	 |    Bala| 26|
+	 +--------+---+
+
+
+
+iii) using spark.read
+
+     df = spark.read.csv 
+	      spark.read.json 
+		              .
+			          .
+			          .
+			          .
+					  
+					  
+	sch = StructType([
+                       StructField("id", StringType(), True),
+                       StructField("name", StringType(), True),
+                       StructField("sal", StringType(), True),
+                       StructField("gender", StringType(), True),
+                       StructField("deptno", StringType(), True),
+                       StructField("state", StringType(), True)
+                     ]
+                    )
+	df4 = spark.read.format("csv").schema(sch).load("C:\\Users\\1025724\\Pictures\\HADOOP\\spark\\SparkSql\\emp_info.csv")
+	df4.show()
+	
+
+iv) Convert pandas dataframe to pyspark dataframe 
+
+
+import pandas as pd
+
+data = [['Alex',10,123],['Bob',12,345],['Clarke',13,2323]]
+df = pd.DataFrame(data,columns=['name','age','value'])
+
+sp_df = spark.createDataFrame(df)
+

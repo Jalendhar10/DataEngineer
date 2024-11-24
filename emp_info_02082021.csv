@@ -1,0 +1,11 @@
+id,firstname,lastname,age,salary,gender,deptno,state,mobilenumber,mail
+101,Ravi,jain,23,2000,M,10,Tamilnadu,9820102292,Ravi@gmail.com
+102,Krish,agarwal,25,3000,M,10,Karnataka,9820102293,Krish@gmail.com
+103,Rama,Reddy,38,4000,F,20,Tamilnadu,9820102294,Rama@gmail.com
+104,Ramu,kochar,43,5000,M,20,Andrapradesh,9820102295,Ramu@gmail.com
+105,lalitha,ambani,51,4000,F,10,Kerala,9820102296,lalitha@gmail.com
+106,Suresh,modi,50,4000,M,30,Andrapradesh,9820102297,Suresh@gmail.com
+107,Mahesh,agarwal,34,3000,M,40,Tamilnadu,9820102298,Mahesh@gmail.com
+108,Lakshmi,ambani,30,8000,F,30,Andrapradesh,9820102299,Lakshmi@gmail.com
+109,Satish,Reddy,52,7000,M,50,Kerala,9820102300,Satish@gmail.com
+110,Anusha,modi,70,3000,F,40,Karnataka,9820102301,Anusha@gmail.com

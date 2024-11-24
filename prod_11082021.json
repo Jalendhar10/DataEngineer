@@ -1,0 +1,16 @@
+[
+{
+"prodid":"PROD001",
+"prodname":"Mobile",
+"price":20000,
+"quantity":"5",
+"company":"Moto"
+},
+{
+"prodid":"PROD002",
+"prodname":"Laptop",
+"price":30000,
+"quantity":"10",
+"company":"Lenovo"
+}
+]

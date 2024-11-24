@@ -1,0 +1,14 @@
+[
+{
+"prodid":"PROD001",
+"prodname":"Mobile",
+"price":20000,
+"quantity":"10"
+},
+{
+"prodid":"PROD002",
+"prodname":"Laptop",
+"price":30000,
+"quantity":"15"
+}
+]

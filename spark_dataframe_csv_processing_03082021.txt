@@ -1,0 +1,181 @@
+Spark Dataframes
+
+
+create emp
+(
+
+
+)
+
+location '/user/hive/warehouse/emp'
+
+                                  /part-m-000
+								  
+								  
+filename ===> emp_info_02082021.csv 
+df = spark.read.format("csv").load(filename)
+df.write.format("csv").save("/user/hive/warehouse/emp")
+
+================================================================
+
+emp_info --> 10persons ----> emp_info.csv 
+
+            file ------> stage ----------> Trusted 
+			            emp_stg            emp_trstd
+						
+						         append 
+								 
+emp_july31 ----------> july31st -----------> july31st
+
+emp_aug1st ----------> august1st ----------> july31st
+                                             august1st
+											 
+emp_aug2nd ---------> august2nd -----------> july31st
+                                             august1st
+											 august2nd 
+											 
+===============================================================
+
+STM --> source to target mapping 
+
+ICICI --> net banking application  (team)
+
+infosys---> team (20 members)     ---> service based companaies
+            BA ---> requirement documents
+			        STM  -> source target mapping documents 
+					
+-------------------------------------------------------------
+
+sourcefile ------------- ------------stage ----------------trusted table 
+						overwrite                    append 
+emp_info_02082021.csv	             emp_stg                   emp 
+
+ 
+ 
+ emp_stg --> columns
+ 
+ insert into emp 
+ select
+ 
+ state,
+ case when state ='TamilNadu' then 'TN'
+    state = 'Karntaka' then 'KA'
+	else 'NA' end as statecode
+ from emp_stg 
+
+=========================================
+
+   dbfs:/FileStore/Src_Files/
+                             emp_info_02082021.csv 
+							 dept_info.csv 
+							 
+1. create dataframe on file 
+   
+2. apply transformations
+
+3. overwrite to stage table (folder)
+
+4. insert into(append) trusted table using stage table. 
+
+
+employee ---> append 
+dept --------> overwrite    
+
+----------------------------------------------------------
+
+create database stage 
+location 'dbfs:/FileStore/Stage';
+
+create database trusted 
+location 'dbfs:/FileStore/Trusted';
+
+
+
+create table emp_stg 
+(
+id int 
+,firstname string 
+,lastname string
+,age int 
+,salary int 
+,gender string 
+,deptno int 
+,state string 
+,mobilenumber int 
+,mail string 
+,filedate string 
+)
+rowformat delimited
+fields terminated by ','
+location 'dbfs:/FileStore/Stage/emp_stg'
+
+create table dept_stg 
+deptno int 
+,deptname string 
+)
+row format delimited
+fields terminated by ','
+location 'dbfs:/FileStore/Stage/dept_stg'
+===================================
+
+create tabl emp 
+(
+id  int 
+,name string 
+,age int 
+,salary int 
+,gender string 
+,deptno int 
+,deptname string 
+,state string 
+,statecode string 
+,mobilenumber int 
+,mail string 
+,filedate string 
+)
+row format delimited
+fields terminated by ','
+location 'dbfs:/FileStore/Trusted/emp'
+
+
+
+create table dept 
+(
+deptno int 
+,deptname string 
+)
+row format delimited
+fields terminated by ','
+location 'dbfs:/FileStore/Trusted/dept'
+
+     
+					====================
+
+
+
+1. create dataframe 
+
+from pyspark.sql.functions import lit 
+
+filename = "emp_info_02082021.csv"
+src_file_path = "dbfs:/FileStore/Src_Files/"+filename
+df = spark.read.format("csv").option("header",True).load(src_file_path)
+
+file_dt = filename[9:17]
+				
+df = df.withColumn("filedate",lit(file_dt))				
+df.write.format("csv").mode("overwrite").load("dbfs:/FileStore/Stage/emp_stg")
+
+
+
+filename = "dept_info.csv"
+src_file_path = "dbfs:/FileStore/Src_Files/"+filename
+df1 = spark.read.format("csv").option("header",True).load(src_file_path)
+df1.write.format("csv").mode("overwrite").load("dbfs:/FileStore/Stage/dept_stg")
+
+2.
+
+
+
+
+

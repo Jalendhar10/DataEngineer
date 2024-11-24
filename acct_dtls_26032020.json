@@ -1,0 +1,7 @@
+[
+{"id":101,"name":"srinivas","balance":25000,"Lastmodifieddate":"26-03-2020 08:45","IsDeleted":false},
+{"id":102,"name":"phani","balance":30000,"Lastmodifieddate":"25-03-2020  05:45:19","IsDeleted":false},
+{"id":103,"name":"krishna","balance":40000,"Lastmodifieddate":"26-03-2020 07:45","IsDeleted":true},
+{"id":104,"name":"Rajiv","balance":25000,"Lastmodifieddate":"26-03-2020 08:45","IsDeleted":true},
+{"id":106,"name":"vani","balance":70000,"Lastmodifieddate":"26-03-2020 05:45","IsDeleted":false}
+]
